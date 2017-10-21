@@ -52,7 +52,13 @@ class Student
     student
   end
 
-  def self.find_by_name
+  def self.find_by_name(name)
+    sql = <<-SQL
+          SELECT * FROM students WHERE name = ? 
+          SQL
+    DB[:conn].execute(sql, name).map do |student|
+      self.new_from_db(student)
+    end.first 
 
   end
 
